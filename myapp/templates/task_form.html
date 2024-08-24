@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<style>
+    /* Center the form horizontally */
+    .form-horizontal {
+        position: absolute;
+        z-index: 2;
+        width: 520px;
+        height: 555px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #0a88b6;
+        border-radius: 1.5rem;
+        padding: 5rem;
+        box-shadow: 1rem 2rem 4rem rgba(0, 0, 0, 0.2),
+            inset 0.4rem 0.6rem 0.6rem rgba(255, 255, 255, 0.4),
+            inset -0.4rem -0.6rem 0.6rem rgba(0, 0, 0, 0.2);
+        color: #333;
+    }
+    h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #0b20a4;
+
+}
+
+    /* Style the button */
+    .button {
+        background-color: cyan;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 4px;
+        position: absolute;
+    }
+    .button1 {
+        background-color: cyan;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: px;
+        border-radius: 25px;
+        position: absolute;
+    }
+
+
+    .button:hover {
+        background-color: #008CBA;
+    }
+
+
+</style>
+
+
+<form method="post" class="form-horizontal">
+    {% csrf_token %}
+    <h2>Task Create</h2>
+    <div class="form-group">
+        <label for="title" class="col-sm-2 control-label">Title:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description" class="col-sm-2 control-label">Description:</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" id="description" name="description">{{ task.description|default_if_none:'' }}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="due_date" class="col-sm-2 control-label">Due Date:</label>
+        <div class="col-sm-10">
+            <input type="datetime-local" class="form-control" id="due_date" name="due_date">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="is_completed" name="is_completed" {% if task.is_completed %}checked{% endif %}> Completed
+                </label>
+            </div>
+        </div>
+    </div>
+    <!-- Other form fields go here... -->
+
+    <button type="submit" class="btn btn-primary">Create Task</button>
+</form>
+<a href="{% url 'task_list' %}" class="button1">Back to Task List</a>
+{% endblock %}

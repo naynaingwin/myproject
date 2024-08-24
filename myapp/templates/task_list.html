@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<style>
+           body {
+  margin: 0;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table td,
+.table th {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 16px;
+}
+
+.table th {
+  background-color: #92c9e6;
+  color: #ffffff;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #d1e8f5;
+}
+
+/*responsive*/
+
+@media (max-width: 500px) {
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+  .table tr {
+    margin-bottom: 15px;
+  }
+  .table td {
+    padding-left: 50%;
+    text-align: left;
+    position: relative;
+  }
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+  }
+}
+
+    /* Add hover effect to table rows */
+    .table tr:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Style the action icons */
+    .action-icons a {
+        margin-right: 10px;
+        color: #06db31;
+        text-decoration: none;
+    }
+
+    /* Style the delete button */
+    .delete-button {
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+    }
+</style>
+
+<h1 style="text-align: center;">Task List</h1>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Completed</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.created_at }}</td>
+                <td>{{ task.due_date|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ task.is_completed|yesno:"Yes,No" }}</td>
+                <td class="action-icons">
+                    <a href="#"><i class="fa-solid fa-circle-info"></i></a>
+                    <a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <form action="{% url 'delete_task' task.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">No tasks available.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
