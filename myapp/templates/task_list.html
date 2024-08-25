@@ -71,7 +71,7 @@
 
     /* Add hover effect to table rows */
     .table tr:hover {
-        background-color: #f0f0f0;
+        background-color: #06e9fea5;
     }
 
     /* Style the action icons */
@@ -121,8 +121,8 @@
                 <td>{{ task.due_date|date:"Y-m-d H:i:s" }}</td>
                 <td>{{ task.is_completed|yesno:"Yes,No" }}</td>
                 <td class="action-icons">
-                    <a href="#"><i class="fa-solid fa-circle-info"></i></a>
-                    <a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="{% url 'task_detail' task.id %}"><i class="fa-solid fa-circle-info"></i></a>
+                    <a href="{% url 'task_update' task.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
                     <form action="{% url 'delete_task' task.id %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="delete-button">
